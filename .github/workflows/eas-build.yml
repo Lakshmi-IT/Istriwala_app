@@ -25,6 +25,6 @@ jobs:
 
       - name: Run EAS Build (Preview APK)
         env:
-          EAS_TOKEN: ${{ secrets.ISTRIWALA }}
+          EAS_TOKEN: ${{ secrets.Istriwala }}
         run: |
           eas build -p android --profile preview --non-interactive
