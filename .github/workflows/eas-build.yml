@@ -22,17 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-    
-      - name: Configure Expo project
-        env:
-          EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
-        run: |
-          eas init --non-interactive \
-            --id $(uuidgen) \
-            --name "istriwala-app" \
-            --slug "istriwala-app" \
-            --owner "Lakshmi_IT"
-
       - name: Run EAS Build (Preview APK)
         env:
           EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
