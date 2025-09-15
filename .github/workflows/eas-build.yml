@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 👇 Automatically link project if not linked
+    
       - name: Configure Expo project
         env:
           EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
@@ -31,7 +31,7 @@ jobs:
             --id $(uuidgen) \
             --name "istriwala-app" \
             --slug "istriwala-app" \
-            --owner "your-expo-username"
+            --owner "Lakshmi_IT"
 
       - name: Run EAS Build (Preview APK)
         env:
