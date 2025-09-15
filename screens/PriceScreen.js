@@ -11,13 +11,13 @@ import { categories } from "../utils/categories";
 
 // Define tabs with keys matching your categories object
 const tabs = [
-  { key: "Men", label: "Men", icon: require("../assets/men.jpg") },
-  { key: "Women", label: "Women", icon: require("../assets/women.webp") },
-  { key: "kids", label: "Kids", icon: require("../assets/kids.webp") },
+  { key: "Men", label: "Men", icon: require("../assets/men.jpeg") },
+  { key: "Women", label: "Women", icon: require("../assets/women.jpeg") },
+  { key: "kids", label: "Kids", icon: require("../assets/kids.jpeg") },
   {
     key: "Household",
     label: "Households",
-    icon: require("../assets/houseHolds.webp"),
+    icon: require("../assets/houseHolds.jpeg"),
   },
 ];
 
