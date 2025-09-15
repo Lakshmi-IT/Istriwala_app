@@ -1,9 +1,9 @@
 name: EAS Cloud Build (Android)
 
 on:
-  workflow_dispatch:   # allows manual trigger
+  workflow_dispatch:   # manual trigger
   push:
-    branches: [ main ] # also runs when pushing to main
+    branches: [ main ]
 
 jobs:
   eas-build:
@@ -25,6 +25,5 @@ jobs:
 
       - name: Run EAS Build (Preview APK)
         env:
-          istriwala: ${{ secrets.Istriwala }}
-        run: |
-          eas build -p android --profile preview --non-interactive
+          EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
+        run: eas build -p android --profile preview --non-interactive
