@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../utils/url";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import { Alert } from "react-native";
 
 import { useCallback } from "react";
 
@@ -121,7 +122,7 @@ export default function YourOrders() {
                   {order.orderStatus === "CANCELLED" && "CANCELLED"}
                   {order.orderStatus === "DELIVERED" && "Delivered"}
                 </Text>
-                {order?.orderStatus === "PENDING" && (
+                {/* {order?.orderStatus === "PENDING" && (
                   <TouchableOpacity
                     style={{
                       backgroundColor: "#ef4444",
@@ -133,6 +134,37 @@ export default function YourOrders() {
                       alignItems: "center",
                     }}
                     onPress={() => handleCancelOrder(order._id)} // ✅ wrap in arrow function
+                  >
+                    <Text style={{ color: "#fff", fontWeight: "600" }}>
+                      Cancel
+                    </Text>
+                  </TouchableOpacity>
+                )} */}
+                {order?.orderStatus === "PENDING" && (
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: "#ef4444",
+                      paddingVertical: 10,
+                      paddingHorizontal: 15,
+                      width: "100%",
+                      borderRadius: 8,
+                      marginTop: 12,
+                      alignItems: "center",
+                    }}
+                    onPress={() => {
+                      Alert.alert(
+                        "Cancel Order",
+                        "Are you sure you want to cancel this order?",
+                        [
+                          { text: "No", style: "cancel" },
+                          {
+                            text: "Yes",
+                            onPress: () => handleCancelOrder(order._id),
+                            style: "destructive",
+                          },
+                        ]
+                      );
+                    }}
                   >
                     <Text style={{ color: "#fff", fontWeight: "600" }}>
                       Cancel

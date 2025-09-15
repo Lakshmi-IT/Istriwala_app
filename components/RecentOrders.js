@@ -38,40 +38,44 @@ const statusColors = {
 const OrderCard = ({ item }) => {
   const st = statusColors[item.statusType] || statusColors.info;
   return (
-    <View style={styles.orderCard}>
-      <View style={styles.orderLeft}>
-        <View style={[styles.iconWrap, { backgroundColor: item.iconBg }]}>
-          <Icon name="iron-outline" size={22} color="#333" />
-        </View>
-        <View style={{ marginLeft: 14, flex: 1 }}>
-          <Text style={styles.orderId}>{item.orderId || "ORD-000"}</Text>
-          <Text style={styles.orderTitle}>{"Ironing"}</Text>
+    <>
+      <View style={styles.orderCard}>
+        <View style={styles.orderLeft}>
+          <View style={[styles.iconWrap, { backgroundColor: item.iconBg }]}>
+            <Icon name="iron-outline" size={22} color="#333" />
+          </View>
+          <View style={{ marginLeft: 14, flex: 1 }}>
+            <Text style={styles.orderId}>{item.orderId || "ORD-000"}</Text>
+            <Text style={styles.orderTitle}>{"Ironing"}</Text>
 
-          <View style={styles.statusRow}>
-            <View style={[styles.statusPill, { backgroundColor: st.bg }]}>
-              <Text style={[styles.statusText, { color: st.text }]}>
-                {item.orderStatus || "create Order"}
+            <View style={styles.statusRow}>
+              <View style={[styles.statusPill, { backgroundColor: st.bg }]}>
+                <Text style={[styles.statusText, { color: st.text }]}>
+                  {item.orderStatus || "create Order"}
+                </Text>
+              </View>
+              <Text style={styles.dateText}>
+                {item?.createdAt
+                  ? new Date(item.createdAt).toLocaleString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : ""}
               </Text>
             </View>
-            <Text style={styles.dateText}>
-              {item?.createdAt
-                ? new Date(item.createdAt).toLocaleString("en-IN", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                : ""}
-            </Text>
           </View>
         </View>
-      </View>
 
-      <View style={styles.amountWrap}>
-        <Text style={styles.amountText}>₹{item?.cartId?.totalPrice || 0}</Text>
+        <View style={styles.amountWrap}>
+          <Text style={styles.amountText}>
+            ₹{item?.cartId?.totalPrice || 0}
+          </Text>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -104,22 +108,38 @@ export default function RecentOrders() {
     }, []) // ✅ wrapped in useCallback
   );
 
+  const canceledOrders = orders?.filter(
+    (items) => items.orderStatus === "CANCELLED"
+  );
+  const Delivered = orders?.filter(
+    (items) => items.orderStatus === "DELIVERED"
+  );
+  const pending = orders?.filter((items) => items.orderStatus === "PENDING");
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={{ padding: 5, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.header}>Recent Orders</Text>
-
+        {orders.length > 0 && <Text style={styles.header}>Recent Orders</Text>}
         <View style={{ marginTop: 8 }}>
           {orders?.slice(0, 3).map((o, index) => (
             <OrderCard key={index} item={o} />
           ))}
         </View>
 
-        <Text style={[styles.header, { marginTop: 28 }]}>Total Expenses</Text>
-        <View style={{display:"flex",flexDirection:"row", gap:15}}>
+        <Text style={[styles.header, { marginTop: 28 }]}>Orders History</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 15,
+          }}
+        >
           <View style={styles.statsRow}>
             <View style={styles.statCard}>
               <View
@@ -128,7 +148,7 @@ export default function RecentOrders() {
                 <Icon name="currency-inr" size={22} color="#333" />
               </View>
               <Text style={styles.statValue}>{amount || 0}</Text>
-              <Text style={styles.statLabel}>Spent</Text>
+              <Text style={styles.statLabel}>SPENT</Text>
             </View>
           </View>
           <View style={styles.statsRow}>
@@ -139,7 +159,43 @@ export default function RecentOrders() {
                 <Icon name="shopping-outline" size={22} color="#333" />
               </View>
               <Text style={styles.statValue}>{orders?.length || 0}</Text>
-              <Text style={styles.statLabel}>Orders</Text>
+              <Text style={styles.statLabel}>ORDERS</Text>
+            </View>
+          </View>
+
+          <View style={styles.statsRow}>
+            <View style={styles.statCard}>
+              <View
+                style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
+              >
+                <Icon name="truck-check-outline" size={22} color="#333" />
+              </View>
+              <Text style={styles.statValue}>{Delivered?.length || 0}</Text>
+              <Text style={styles.statLabel}>DELIVERED</Text>
+            </View>
+          </View>
+          <View style={styles.statsRow}>
+            <View style={styles.statCard}>
+              <View
+                style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
+              >
+                <Icon name="clock-outline" size={22} color="#333" />
+              </View>
+              <Text style={styles.statValue}>{pending?.length || 0}</Text>
+              <Text style={styles.statLabel}>PENDING</Text>
+            </View>
+          </View>
+          <View style={styles.statsRow}>
+            <View style={styles.statCard}>
+              <View
+                style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
+              >
+                <Icon name="cancel" size={22} color="#333" />
+              </View>
+              <Text style={styles.statValue}>
+                {canceledOrders?.length || 0}
+              </Text>
+              <Text style={styles.statLabel}>CANCELLED</Text>
             </View>
           </View>
         </View>

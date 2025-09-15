@@ -141,6 +141,50 @@ const ProfileScreen = () => {
   //   );
   // }
 
+  const fetchLocationFromPincode = async (pincode) => {
+    try {
+      const res = await axios.get(
+        `https://api.postalpincode.in/pincode/${pincode}`
+      );
+      const data = res.data[0];
+
+      if (data.Status === "Success" && data.PostOffice?.length > 0) {
+        const postOffice = data.PostOffice[0];
+        console.log(postOffice, "postOffice");
+        setForm((prev) => ({
+          ...prev,
+          area: postOffice.District || prev.area,
+          state: postOffice.State || prev.state,
+        }));
+        Toast.show({
+        type: "success",
+        text1: "📍 Location detected",
+        text2: `${postOffice.District}, ${postOffice.State}` ,
+        position: "top",
+      });
+      
+      } else {
+        Toast.show({
+        type: "error",
+        text1: "Invalid Pincode",
+        text2: "Please Enter a Valid Pincode.",
+        position: "top",
+      });
+     
+        setForm((prev) => ({ ...prev, area: "", state: "" }));
+      }
+    } catch (error) {
+      console.error("Pincode API error:", error);
+      Toast.show({
+        type: "error",
+        text1: "Filed",
+        text2: "Failed to fetch location from ",
+        position: "top",
+      });
+    
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.heroSection}>
@@ -256,7 +300,7 @@ const ProfileScreen = () => {
               editable={isEditing}
             />
           </View>
-          <View style={styles.field}>
+          {/* <View style={styles.field}>
             <Text style={styles.label}>Pincode</Text>
             <TextInput
               style={styles.input}
@@ -266,8 +310,30 @@ const ProfileScreen = () => {
               placeholder="Enter Pincode"
               onChangeText={(val) =>
                 handleChange("pincode", val.replace(/\D/g, "").slice(0, 6))
+                
               }
               editable={isEditing}
+            />
+          </View> */}
+          <View style={styles.field}>
+            <Text style={styles.label}>Pincode</Text>
+            <TextInput
+              style={styles.input}
+              value={form?.pincode || ""}
+              keyboardType="numeric"
+              maxLength={6}
+              placeholder="Enter Pincode"
+              editable={isEditing}
+              onChangeText={(val) => {
+                // allow only numbers and max 6 digits
+                const numericVal = val.replace(/\D/g, "").slice(0, 6);
+                setForm({ ...form, pincode: numericVal });
+
+                // auto-fetch when 6 digits are entered
+                if (numericVal.length === 6) {
+                  fetchLocationFromPincode(numericVal);
+                }
+              }}
             />
           </View>
         </View>

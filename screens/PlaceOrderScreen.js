@@ -26,7 +26,7 @@ export default function OrderPage() {
 
   const [selectedCategory, setSelectedCategory] = useState(category || "Men");
   const [selectedItem, setSelectedItem] = useState("");
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState("1");
   const [cartData, setCartData] = useState([]);
 
   const [fullcartDetails, setFullcartDetails] = useState(null);
@@ -41,28 +41,6 @@ export default function OrderPage() {
       setSelectedCategory(category);
     }
   }, [category]);
-
-  // ✅ Fetch profile address
-  // useEffect(() => {
-  //   (async () => {
-  //     const mobile = await AsyncStorage.getItem("mobile");
-  //     if (!mobile) return;
-
-  //     try {
-  //       const res = await axios.get(`${BASE_URL}api/user/profile/${mobile}`);
-  //       const user = res.data.user;
-  //       const formattedAddress = {
-  //         id: user._id,
-  //         label: "Home",
-  //         details: `${user.hno}, ${user.street}, ${user.area}, ${user.state} - ${user.pincode}`,
-  //       };
-  //       setAddress([formattedAddress]);
-  //       setSelectedAddress(formattedAddress.id);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   })();
-  // }, []);
 
   const fetchProfile = async () => {
     try {
@@ -90,28 +68,28 @@ export default function OrderPage() {
     }
   };
 
+  const fetchCart = async () => {
+    try {
+      const mobile = await AsyncStorage.getItem("mobile");
+      if (!mobile) return;
+      const res = await axios.get(`${BASE_URL}api/cart/${mobile}`);
+      setFullcartDetails(res.data);
+      setCartData(res.data.items || []);
+      setTotalAmount(res.data.totalPrice || 0);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useFocusEffect(
     useCallback(() => {
       fetchProfile();
     }, [])
   );
-
-  // ✅ Fetch cart
-  useEffect(() => {
-    (async () => {
-      const mobile = await AsyncStorage.getItem("mobile");
-      if (!mobile) return;
-
-      try {
-        const res = await axios.get(`${BASE_URL}api/cart/${mobile}`);
-        setFullcartDetails(res.data);
-        setCartData(res.data.items || []);
-        setTotalAmount(res.data.totalPrice || 0);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchCart();
+    }, [])
+  );
 
   // ✅ Add to cart
   const handleAddToCart = async () => {
@@ -292,238 +270,6 @@ export default function OrderPage() {
   }
 
   return (
-    // <FlatList
-    //   style={{ paddingHorizontal: 10 }}
-    //   data={cartData || []}
-    //   keyExtractor={(item, index) => item?._id?.toString() || index.toString()}
-    //   ListHeaderComponent={
-    //     <View>
-    //       <View style={styles.cartItemsSection}>
-    //         {/* Category */}
-    //         <Text style={styles.heading}>Select Category</Text>
-    //         <View style={styles.border}>
-    //           <Picker
-    //             selectedValue={selectedCategory}
-    //             onValueChange={(val) => setSelectedCategory(val)}
-    //           >
-    //             {Object.keys(categories).map((cat) => (
-    //               <Picker.Item
-    //                 key={cat}
-    //                 label={cat.toUpperCase()}
-    //                 value={cat}
-    //               />
-    //             ))}
-    //           </Picker>
-    //         </View>
-
-    //         {/* Item */}
-    //         <Text style={styles.heading}>Select Item</Text>
-    //         <View style={styles.border}>
-    //           <Picker
-    //             selectedValue={selectedItem}
-    //             onValueChange={(val) => setSelectedItem(val)}
-    //           >
-    //             {(categories[selectedCategory] || []).map((item) => (
-    //               <Picker.Item
-    //                 key={item.name}
-    //                 label={item.name}
-    //                 value={item.name}
-    //               />
-    //             ))}
-    //           </Picker>
-    //         </View>
-
-    //         {/* Qty */}
-    //         <Text style={styles.heading}>QTY</Text>
-    //         <TextInput
-    //           style={styles.input}
-    //           keyboardType="numeric"
-    //           value={String(qty)}
-    //           onChangeText={(val) => setQty(parseInt(val) || 1)}
-    //         />
-
-    //         <TouchableOpacity style={styles.button} onPress={handleAddToCart}>
-    //           <View
-    //             style={{
-    //               flexDirection: "row",
-    //               alignItems: "center",
-    //               justifyContent: "center",
-    //             }}
-    //           >
-    //             <Ionicons
-    //               name="cart"
-    //               size={20}
-    //               color="#fff"
-    //               style={{ marginRight: 8 }}
-    //             />
-    //             <Text style={styles.buttonText}>Add to Cart</Text>
-    //           </View>
-    //         </TouchableOpacity>
-    //       </View>
-    //       <Text style={styles.itemName}>Your Cart Items</Text>
-    //     </View>
-    //   }
-    //   // renderItem={({ item }) => (
-    //   //   <View >
-    //   //     <View style={styles.cartItem}>
-    //   //       <View style={styles.cartItemTop}>
-    //   //         <Text style={styles.itemName}>{item?.item}</Text>
-    //   //         <Text style={styles.itemPrice}>₹{item?.price * item?.qty}</Text>
-    //   //       </View>
-
-    //   //       <View style={styles.cartItemBottom}>
-    //   //         {/* Quantity Selector */}
-    //   //         <View style={styles.qtyButtons}>
-    //   //           <TouchableOpacity
-    //   //             style={styles.qtyButton}
-    //   //             onPress={() => handleQuantityChange(item?._id, item?.qty - 1)}
-    //   //           >
-    //   //             <Text style={styles.qtyButtonText}>-</Text>
-    //   //           </TouchableOpacity>
-
-    //   //           <Text style={styles.qtyText}>{item.qty}</Text>
-
-    //   //           <TouchableOpacity
-    //   //             style={styles.qtyButton}
-    //   //             onPress={() => handleQuantityChange(item?._id, item?.qty + 1)}
-    //   //           >
-    //   //             <Text style={styles.qtyButtonText}>+</Text>
-    //   //           </TouchableOpacity>
-    //   //         </View>
-
-    //   //         {/* Remove Button */}
-    //   //         <TouchableOpacity
-    //   //           style={styles.removeButton}
-    //   //           onPress={() => deleteCartItem(item?._id)}
-    //   //         >
-    //   //           <Text style={styles.removeButtonText}>Remove</Text>
-    //   //         </TouchableOpacity>
-    //   //       </View>
-    //   //     </View>
-    //   //   </View>
-    //   // )}
-    //   renderItem={() => (
-    //     <View style={styles.cartItemsWrapper}>
-    //       {cartData.length === 0 ? (
-    //         <Text style={{ textAlign: "center", padding: 20 }}>
-    //           Your cart is empty
-    //         </Text>
-    //       ) : (
-    //         cartData.map((item) => (
-    //           <View key={item._id} style={styles.cartItem}>
-    //             <View style={styles.cartItemTop}>
-    //               <Text style={styles.itemName}>{item?.item}</Text>
-    //               <Text style={styles.itemPrice}>
-    //                 ₹{item?.price * item?.qty}
-    //               </Text>
-    //             </View>
-
-    //             <View style={styles.cartItemBottom}>
-    //               <View style={styles.qtyButtons}>
-    //                 <TouchableOpacity
-    //                   style={styles.qtyButton}
-    //                   onPress={() =>
-    //                     handleQuantityChange(item?._id, item?.qty - 1)
-    //                   }
-    //                 >
-    //                   <Text style={styles.qtyButtonText}>-</Text>
-    //                 </TouchableOpacity>
-
-    //                 <Text style={styles.qtyText}>{item.qty}</Text>
-
-    //                 <TouchableOpacity
-    //                   style={styles.qtyButton}
-    //                   onPress={() =>
-    //                     handleQuantityChange(item?._id, item?.qty + 1)
-    //                   }
-    //                 >
-    //                   <Text style={styles.qtyButtonText}>+</Text>
-    //                 </TouchableOpacity>
-    //               </View>
-
-    //               <TouchableOpacity
-    //                 style={styles.removeButton}
-    //                 onPress={() => deleteCartItem(item?._id)}
-    //               >
-    //                 <Text style={styles.removeButtonText}>Remove</Text>
-    //               </TouchableOpacity>
-    //             </View>
-    //           </View>
-    //         ))
-    //       )}
-    //     </View>
-    //   )}
-    //   ListEmptyComponent={() => (
-    //     <View style={{ alignItems: "center", padding: 20 }}>
-    //       {/* <Image
-    //         source={require("../assets/empty-cart.png")}
-    //         style={{ width: 150, height: 150, resizeMode: "contain" }}
-    //       /> */}
-    //       <Text style={{ marginTop: 10, fontSize: 16, color: "#555" }}>
-    //         Your cart is empty
-    //       </Text>
-    //     </View>
-    //   )}
-    //   ListFooterComponent={
-    //     <>
-    //       {/* Address */}
-    //       <Text style={styles.heading}>Delivery Address</Text>
-
-    //       {address.length > 0 ? (
-    //         address.map((addr) => (
-    //           <TouchableOpacity
-    //             key={addr.id}
-    //             onPress={() => setSelectedAddress(addr.id)}
-    //             style={[
-    //               styles.addressBox,
-    //               selectedAddress === addr.id && { borderColor: "#042048" },
-    //             ]}
-    //           >
-    //             <View style={{ flexDirection: "row", alignItems: "center" }}>
-    //               {/* Radio Circle */}
-    //               <View
-    //                 style={[
-    //                   styles.radioOuter,
-    //                   selectedAddress === addr.id && styles.radioOuterSelected,
-    //                 ]}
-    //               >
-    //                 {selectedAddress === addr.id && (
-    //                   <View style={styles.radioInner} />
-    //                 )}
-    //               </View>
-
-    //               <View style={{ marginLeft: 10 }}>
-    //                 <Text style={{ fontWeight: "bold" }}>{addr.label}</Text>
-    //                 <Text>{addr.details}</Text>
-    //               </View>
-    //             </View>
-    //           </TouchableOpacity>
-    //         ))
-    //       ) : (
-    //         <TouchableOpacity
-    //           style={styles.addAddressButton}
-    //           onPress={() => navigation.navigate("Profile")}
-    //         >
-    //           <Text style={styles.addAddressText}>Add Address</Text>
-    //         </TouchableOpacity>
-    //       )}
-
-    //       {/* Payment */}
-    //       <Text style={styles.heading}>Payment Method</Text>
-    //       <TouchableOpacity onPress={() => setPaymentMethod("cod")}>
-    //         <Text style={{ color: paymentMethod === "cod" ? "blue" : "black" }}>
-    //           Cash on Delivery
-    //         </Text>
-    //       </TouchableOpacity>
-
-    //       {/* Place Order */}
-    //       <Text style={styles.total}>Total: ₹{totalAmount}</Text>
-    //       <TouchableOpacity style={styles.button} onPress={handlePlaceOrder}>
-    //         <Text style={styles.buttonText}>Place Order</Text>
-    //       </TouchableOpacity>
-    //     </>
-    //   }
-    // />
     <ScrollView style={{ flex: 1, paddingHorizontal: 10 }}>
       {/* Header: Category / Item / Qty / Add to Cart */}
       <View>
@@ -567,8 +313,17 @@ export default function OrderPage() {
           <TextInput
             style={styles.input}
             keyboardType="numeric"
-            value={String(qty)}
-            onChangeText={(val) => setQty(parseInt(val) || 1)}
+            value={qty}
+            maxLength={3} // optional
+            onChangeText={(val) => {
+              // allow only digits and allow empty string while typing
+              const numericOnly = val.replace(/[^0-9]/g, "");
+              setQty(numericOnly);
+            }}
+            onBlur={() => {
+              // enforce minimum when user leaves input
+              if (qty === "" || qty === "0") setQty("1");
+            }}
           />
 
           <TouchableOpacity style={styles.button} onPress={handleAddToCart}>

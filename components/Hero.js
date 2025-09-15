@@ -12,34 +12,35 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import BannerCarousel from "./BannerCarousel";
 const { height, width } = Dimensions.get("window");
 
 const categories = [
   {
     id: 1,
     name: "Men",
-    image: require("../assets/men.jpg"),
+    image: require("../assets/men.jpeg"),
     color: "#042048",
     hovercolor: "#fde047",
   },
   {
     id: 2,
     name: "Women",
-    image: require("../assets/women.webp"),
+    image: require("../assets/women.jpeg"),
     color: "#042048",
     hovercolor: "#fde047",
   },
   {
     id: 3,
     name: "kids",
-    image: require("../assets/kids.webp"),
+    image: require("../assets/kids.jpeg"),
     color: "#042048",
     hovercolor: "#fde047",
   },
   {
     id: 4,
     name: "Household",
-    image: require("../assets/houseHolds.webp"),
+    image: require("../assets/households.jpeg"),
     color: "#042048",
     hovercolor: "#fde047",
   },
@@ -64,17 +65,18 @@ const HomeScreen = () => {
   return (
     <View style={[styles.container]}>
       <ScrollView contentContainerStyle={{ paddingBottom: 10 }}>
-        <Image
+        {/* <Image
           source={require("../assets/CoverImage 2.png")}
           style={styles.banner}
-        />
+        /> */}
+        <BannerCarousel />
 
         {/* Categories */}
         <Text style={styles.sectionTitle}>SELECT IRONING FOR</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={[styles.categoryScroll,  { width: width - 20 }]}
+          contentContainerStyle={[styles.categoryScroll, { width: width - 20 }]}
         >
           {categories.map((cat) => (
             <Pressable
@@ -94,7 +96,7 @@ const HomeScreen = () => {
               onPressOut={() => setActive(null)}
             >
               <Image source={cat.image} style={styles.categoryImage} />
-              <Text style={styles.categoryText}>{cat.name}</Text>
+              {/* <Text style={styles.categoryText}>{cat.name}</Text> */}
             </Pressable>
           ))}
         </ScrollView>
@@ -151,22 +153,22 @@ const styles = StyleSheet.create({
   categoryScroll: {
     paddingLeft: 0,
     paddingRight: 0,
-    
+
     display: "flex",
-    flexDirection:"row",
+    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems:"center"
+    alignItems: "center",
   },
   categoryBox: {
     borderWidth: 2,
     borderRadius: 12,
-    padding: 8,
+    padding: 3,
     // marginRight: 10,
     alignItems: "center",
     width: 79,
     height: 110,
   },
-  categoryImage: { width: 55, height: 60, objectFit: "fill" },
+  categoryImage: { width: "100%", height: "100%", objectFit: "fill" },
   categoryText: { marginTop: 10, fontWeight: "bold", fontSize: 12 },
   buttonRow: {
     flexDirection: "row",

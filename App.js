@@ -87,7 +87,7 @@ function CustomDrawerContent(props) {
         const storedMobile = await AsyncStorage.getItem("mobile");
         const storedName = await AsyncStorage.getItem("name");
 
-        console.log(name,mobile)
+        console.log(name, mobile);
 
         if (storedMobile) setMobile(storedMobile);
         if (storedName) setName(storedName);
@@ -122,9 +122,7 @@ function CustomDrawerContent(props) {
           <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
             Welcome {name}!
           </Text>
-          <Text style={{ color: "#fff", fontSize: 12 }}>
-            {mobile}
-          </Text>
+          <Text style={{ color: "#fff", fontSize: 12 }}>{mobile}</Text>
         </View>
       </View>
 
@@ -135,26 +133,55 @@ function CustomDrawerContent(props) {
 
 // -------------------- App --------------------
 export default function App() {
+  // const [appIsReady, setAppIsReady] = useState(false);
+
+  // useEffect(() => {
+  //   async function prepare() {
+  //     try {
+  //       await SplashScreen.preventAutoHideAsync();
+  //       await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     } catch (e) {
+  //       console.warn(e);
+  //     } finally {
+  //       setAppIsReady(true);
+  //     }
+  //   }
+  //   prepare();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (appIsReady) SplashScreen.hideAsync();
+  // }, [appIsReady]);
+
+  // if (!appIsReady) return null;
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
     async function prepare() {
       try {
+        // Prevent splash screen from auto-hiding
         await SplashScreen.preventAutoHideAsync();
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Simulate loading for 3 seconds
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
         setAppIsReady(true);
       }
     }
+
     prepare();
   }, []);
 
   useEffect(() => {
-    if (appIsReady) SplashScreen.hideAsync();
+    if (appIsReady) {
+      // Hide the splash screen once app is ready
+      SplashScreen.hideAsync();
+    }
   }, [appIsReady]);
 
+  // Keep splash screen visible until app is ready
   if (!appIsReady) return null;
 
   return (
