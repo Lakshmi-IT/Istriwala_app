@@ -1,10 +1,7 @@
 name: EAS Build APK
 
 on:
-  workflow_dispatch: # so you can run it manually
-  push:
-    branches:
-      - main   # or your default branch
+  workflow_dispatch:
 
 jobs:
   build-android:
@@ -24,6 +21,17 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      # 👇 Automatically link project if not linked
+      - name: Configure Expo project
+        env:
+          EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
+        run: |
+          eas init --non-interactive \
+            --id $(uuidgen) \
+            --name "istriwala-app" \
+            --slug "istriwala-app" \
+            --owner "your-expo-username"
 
       - name: Run EAS Build (Preview APK)
         env:
