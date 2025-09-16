@@ -98,7 +98,7 @@ export default function RecentOrders() {
             setAmount(data.totalAmount);
           }
         } catch (err) {
-          console.error("Failed to load orders:", err);
+          // console.error("Failed to load orders:", err);
         } finally {
           setLoading(false);
         }

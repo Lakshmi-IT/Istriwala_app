@@ -1,74 +1,9 @@
-// // components/Header.js
-// import React from "react";
-// import { View, Text, Image, TouchableOpacity } from "react-native";
-// import Ionicons from "react-native-vector-icons/Ionicons";
-
-// export default function Header({ onMenuPress }) {
-//   return (
-//     <View
-//       style={{
-//         height: 80,
-//         backgroundColor: "#fff",
-
-//         paddingHorizontal: 10,
-//       }}
-//     >
-//       <View
-//         style={{
-//           marginTop: 35,
-//           //   fd9b0c
-
-//           backgroundColor: "#fff",
-//           flexDirection: "row",
-//           alignItems: "center",
-//           justifyContent: "space-between",
-//         }}
-//       >
-//         <TouchableOpacity onPress={onMenuPress}>
-//           <Ionicons name="menu-outline" size={25} color="#042048" />
-//         </TouchableOpacity>
-
-//         <View
-//           style={{
-//             flexDirection: "row",
-//             alignItems: "center",
-//           }}
-//         >
-//           {/* <Text style={{ color: "#000", fontSize: 28, fontWeight: "bold" }}>
-//             ISTRIWALA
-//           </Text> */}
-//           <Image
-//             source={require("../assets/logobanner.jpeg")}
-//             style={{width:160, height:50}}
-//           />
-//         </View>
-//         <View
-//           style={{
-//             flexDirection: "row",
-//             justifyContent: "space-between",
-//             alignItems: "center",
-//           }}
-//         >
-//           <TouchableOpacity style={{ marginRight: 20 }}>
-//             <Ionicons name="notifications" size={20} color="#042048" />
-//           </TouchableOpacity>
-
-//           <TouchableOpacity>
-//             <Ionicons name="call" size={20} color="#042048" />
-//           </TouchableOpacity>
-//         </View>
-
-//         {/* Right - Menu Icon */}
-//       </View>
-//     </View>
-//   );
-// }
-
-// components/Header.js
 
 import React from "react";
 import { View, Text, Image, TouchableOpacity, Linking } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+// import { Ionicons } from '@expo/vector-icons';
+
 import { Navigation } from "lucide-react-native";
 
 export default function Header({ onMenuPress }) {

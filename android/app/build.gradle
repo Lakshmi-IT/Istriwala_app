@@ -2,6 +2,8 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+
+
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
 /**
@@ -83,60 +85,56 @@ def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.istriwala.app'
+    namespace "com.istriwala.app"
+
     defaultConfig {
-        applicationId 'com.istriwala.app'
+        applicationId "com.istriwala.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-    }
-    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
-            release {
-        storeFile file(MYAPP_UPLOAD_STORE_FILE)
-        storePassword MYAPP_UPLOAD_STORE_PASSWORD
-        keyAlias MYAPP_UPLOAD_KEY_ALIAS
-        keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+
+        // Example custom field
+        buildConfigField "String", "APP_NAME", "\"Istriwala\""
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
-            shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
+            shrinkResources (findProperty("android.enableShrinkResourcesInReleaseBuilds")?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            crunchPngs (findProperty('android.enablePngCrunchInReleaseBuilds')?.toBoolean() ?: true)
-            signingConfig signingConfigs.release
-        minifyEnabled false
-        shrinkResources false
+            crunchPngs (findProperty("android.enablePngCrunchInReleaseBuilds")?.toBoolean() ?: true)
         }
     }
- 
-
 
     packagingOptions {
         jniLibs {
-            useLegacyPackaging (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
+            useLegacyPackaging (findProperty("expo.useLegacyPackaging")?.toBoolean() ?: false)
         }
     }
+
     androidResources {
-        ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
+        ignoreAssetsPattern "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 

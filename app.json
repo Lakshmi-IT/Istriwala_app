@@ -1,27 +1,21 @@
 {
   "expo": {
-    "name": "ISTRIWALA APP",
-    "slug": "istriwala-app",
+    "name": "ISTRIWALA",
+    "slug": "istriwala",
     "owner": "karthikgopireddy",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/istriwalaLogo.png",
     "userInterfaceStyle": "light",
     "android": {
       "package": "com.istriwala.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/istriwalaLogo.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#07294e"
       },
       "edgeToEdgeEnabled": true
     },
     "ios": {
       "supportsTablet": true
-    },
-    "splash": {
-      "image": "./assets/istriwalaLogo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,6 +24,12 @@
       "eas": {
         "projectId": "712f7337-4c1c-4372-a6f9-10872f48c2d6"
       }
+    },
+    "plugins": ["expo-asset", "expo-font"],
+
+    "splash": {
+      "backgroundColor": "#07294e",
+      "resizeMode": "contain"
     }
   }
 }

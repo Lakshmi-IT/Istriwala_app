@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "postinstall": "cp -R node_modules/react-native-vector-icons/Fonts ./android/app/src/main/assets/fonts"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.1.0",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-picker/picker": "^2.11.2",
     "@react-navigation/bottom-tabs": "^7.4.7",
@@ -17,6 +19,9 @@
     "@react-navigation/native-stack": "^7.3.26",
     "axios": "^1.11.0",
     "expo": "~53.0.22",
+    "expo-asset": "~11.1.7",
+    "expo-dev-client": "~5.2.4",
+    "expo-font": "~13.3.2",
     "expo-location": "~18.1.6",
     "expo-splash-screen": "~0.30.10",
     "expo-status-bar": "~2.2.3",
@@ -28,8 +33,7 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-toast-message": "^2.3.3",
-    "react-native-vector-icons": "^10.3.0",
-    "expo-dev-client": "~5.2.4"
+    "react-native-vector-icons": "^10.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
