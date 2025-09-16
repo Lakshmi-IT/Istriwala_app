@@ -22,11 +22,13 @@
     },
     "extra": {
       "eas": {
-        "projectId": "b480df94-bfce-462c-a1a3-e66cff722186"
+        "projectId": "d6f24c11-e994-4a26-96b6-c5cca8ffec47"
       }
     },
-    "plugins": ["expo-asset", "expo-font"],
-
+    "plugins": [
+      "expo-asset",
+      "expo-font"
+    ],
     "splash": {
       "backgroundColor": "#07294e",
       "resizeMode": "contain"
