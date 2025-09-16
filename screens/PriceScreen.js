@@ -17,7 +17,7 @@ const tabs = [
   {
     key: "Household",
     label: "Households",
-    icon: require("../assets/houseHolds.jpeg"),
+    icon: require("../assets/households.jpeg"),
   },
 ];
 
