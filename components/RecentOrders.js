@@ -11,6 +11,7 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { BASE_URL } from "../utils/url";
@@ -42,7 +43,11 @@ const OrderCard = ({ item }) => {
       <View style={styles.orderCard}>
         <View style={styles.orderLeft}>
           <View style={[styles.iconWrap, { backgroundColor: item.iconBg }]}>
-            <Icon name="iron-outline" size={22} color="#333" />
+            {/* <Icon name="iron-outline" size={22} color="#333" /> */}
+            <Image
+              source={require("../assets/icons/ironing.png")}
+              style={{ width: 20, height: 20, resizeMode: "contain" }}
+            />
           </View>
           <View style={{ marginLeft: 14, flex: 1 }}>
             <Text style={styles.orderId}>{item.orderId || "ORD-000"}</Text>
@@ -116,8 +121,6 @@ export default function RecentOrders() {
   );
   const pending = orders?.filter((items) => items.orderStatus === "PENDING");
 
-
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -145,7 +148,12 @@ export default function RecentOrders() {
               <View
                 style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
               >
-                <Icon name="currency-inr" size={22} color="#333" />
+                {/* <Icon name="currency-inr" size={22} color="#333" />
+                 */}
+                <Image
+                  source={require("../assets/icons/money.png")}
+                  style={{ width: 30, height: 22, resizeMode: "contain" }}
+                />
               </View>
               <Text style={styles.statValue}>{amount || 0}</Text>
               <Text style={styles.statLabel}>SPENT</Text>
@@ -156,7 +164,11 @@ export default function RecentOrders() {
               <View
                 style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
               >
-                <Icon name="shopping-outline" size={22} color="#333" />
+                {/* <Icon name="shopping-outline" size={22} color="#333" /> */}
+                <Image
+                  source={require("../assets/icons/Orders2.png")}
+                  style={{ width: 30, height: 22, resizeMode: "contain" }}
+                />
               </View>
               <Text style={styles.statValue}>{orders?.length || 0}</Text>
               <Text style={styles.statLabel}>ORDERS</Text>
@@ -168,7 +180,11 @@ export default function RecentOrders() {
               <View
                 style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
               >
-                <Icon name="truck-check-outline" size={22} color="#333" />
+                {/* <Icon name="truck-check-outline" size={22} color="#333" /> */}
+                <Image
+                  source={require("../assets/icons/delivery.png")}
+                  style={{ width: 30, height: 22, resizeMode: "contain" }}
+                />
               </View>
               <Text style={styles.statValue}>{Delivered?.length || 0}</Text>
               <Text style={styles.statLabel}>DELIVERED</Text>
@@ -179,7 +195,12 @@ export default function RecentOrders() {
               <View
                 style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
               >
-                <Icon name="clock-outline" size={22} color="#333" />
+                {/* <Icon name="clock-outline" size={22} color="#333" />
+                 */}
+                <Image
+                  source={require("../assets/icons/pending.png")}
+                  style={{ width: 30, height: 22, resizeMode: "contain" }}
+                />
               </View>
               <Text style={styles.statValue}>{pending?.length || 0}</Text>
               <Text style={styles.statLabel}>PENDING</Text>
@@ -190,7 +211,11 @@ export default function RecentOrders() {
               <View
                 style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
               >
-                <Icon name="cancel" size={22} color="#333" />
+                {/* <Icon name="cancel" size={22} color="#333" /> */}
+                <Image
+                  source={require("../assets/icons/cancel.png")}
+                  style={{ width: 30, height: 22, resizeMode: "contain" }}
+                />
               </View>
               <Text style={styles.statValue}>
                 {canceledOrders?.length || 0}

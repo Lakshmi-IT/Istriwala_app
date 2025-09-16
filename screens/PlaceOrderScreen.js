@@ -16,7 +16,8 @@ import axios from "axios";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { BASE_URL } from "../utils/url";
 import { categories } from "../utils/categories";
-import Ionicons from "react-native-vector-icons/Ionicons";
+// import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from '@expo/vector-icons';
 import Toast from "react-native-toast-message";
 import { useRoute } from "@react-navigation/native";
 

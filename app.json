@@ -1,37 +1,10 @@
 {
   "expo": {
-    "name": "ISTRIWALA APP",
-    "slug": "istriwala-app",
-    "owner": "lakshmi_it",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "userInterfaceStyle": "light",
-    "android": {
-      "package": "com.istriwala.app",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/istriwalaLogo.png",
-        "backgroundColor": "#07294e"
-      },
-      "edgeToEdgeEnabled": true
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "extra": {
       "eas": {
-        "projectId": "d6f24c11-e994-4a26-96b6-c5cca8ffec47"
+        "projectId": "ee802619-95e4-4e01-9e68-c2308d76e91d"
       }
     },
-    "plugins": [
-      "expo-asset",
-      "expo-font"
-    ],
-    "splash": {
-      "backgroundColor": "#07294e",
-      "resizeMode": "contain"
-    }
+    "owner": "karthikgopireddy"
   }
 }

@@ -10,7 +10,8 @@ import {
   Pressable,
   Linking,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+// import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import BannerCarousel from "./BannerCarousel";
 const { height, width } = Dimensions.get("window");
@@ -108,11 +109,20 @@ const HomeScreen = () => {
             style={styles.callBtn}
             onPress={() => navigation.navigate("Place Order")}
           >
-            <Ionicons name="cart-outline" size={20} color="#fff" />
+            {/* <Ionicons name="cart-outline" size={20} color="#fff" /> */}
+            <Image
+              source={require("../assets/icons/cartIcon.png")}
+              style={{ width: 20, height: 20, resizeMode: "contain" }}
+            />
+
             <Text style={styles.btnText}> Place Order</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.msgBtn} onPress={openWhatsApp}>
-            <Ionicons name="logo-whatsapp" size={20} color="#fff" />
+            <Image
+              source={require("../assets/icons/whatsapp.png")}
+              style={{ width: 20, height: 20, resizeMode: "contain" }}
+            />
+            {/* <Ionicons name="logo-whatsapp" size={20} color="#fff" /> */}
             <Text style={styles.btnText}> Message us</Text>
           </TouchableOpacity>
         </View>

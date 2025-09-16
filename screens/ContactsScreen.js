@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 
 const ContactScreen = () => {
   const serviceAreas = [
@@ -31,11 +30,12 @@ const ContactScreen = () => {
     },
   ];
 
+  // Replace icons with local images (place these PNGs in ../assets/icons/)
   const stats = [
-    { icon: "people-outline", number: "5000+", label: "Happy Customers" },
-    { icon: "time-outline", number: "24-48hrs", label: "Turnaround Time" },
-    { icon: "ribbon-outline", number: "99%", label: "Satisfaction Rate" },
-    { icon: "location-outline", number: "25+", label: "Service Areas" },
+    { src: require("../assets/icons/happyCustomers.png"), number: "5000+", label: "Happy Customers" },
+    { src: require("../assets/icons/timeline.png"), number: "24-48hrs", label: "Turnaround Time" },
+    { src: require("../assets/icons/satisfaction.png"), number: "99%", label: "Satisfaction Rate" },
+    { src: require("../assets/icons/whiteLocation.png"), number: "25+", label: "Service Areas" },
   ];
 
   return (
@@ -57,7 +57,10 @@ const ContactScreen = () => {
 
         {serviceAreas.map((area, index) => (
           <View key={index} style={styles.card}>
-            <Ionicons name="location-outline" size={22} color="#042048" />
+            <Image
+              source={require("../assets/icons/bluelocation.png")}
+              style={{ width: 22, height: 22, resizeMode: "contain" }}
+            />
             <Text style={styles.cardText}>{area}</Text>
           </View>
         ))}
@@ -84,7 +87,11 @@ const ContactScreen = () => {
           {stats.map((stat, index) => (
             <View key={index} style={styles.statItem}>
               <View style={styles.iconCircle}>
-                <Ionicons name={stat.icon} size={24} color="white" />
+                <Image
+                  source={stat.src}
+                  style={styles.statIcon}
+                  resizeMode="contain"
+                />
               </View>
               <Text style={styles.statNumber}>{stat.number}</Text>
               <Text style={styles.statLabel}>{stat.label}</Text>
@@ -142,6 +149,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,
+    overflow: "hidden",
+  },
+  statIcon: {
+    width: 26,
+    height: 26,
+    tintColor: "#fff", // optional: will tint monochrome PNGs; remove if your images are colored
   },
   statNumber: { fontSize: 20, fontWeight: "bold", color: "#042048" },
   statLabel: { fontSize: 14, color: "#042048", textAlign: "center" },

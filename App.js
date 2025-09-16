@@ -1,3 +1,6 @@
+
+
+
 // import React, { useEffect, useState } from "react";
 // import { Platform, Text, View } from "react-native";
 // import { NavigationContainer } from "@react-navigation/native";
@@ -8,13 +11,16 @@
 //   DrawerItemList,
 // } from "@react-navigation/drawer";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// // import * as SplashScreen from "expo-splash-screen";
-// import Ionicons from "react-native-vector-icons/Ionicons";
+// // import Ionicons from "react-native-vector-icons/Ionicons";
+// import { Ionicons } from '@expo/vector-icons';
 // import { StatusBar } from "expo-status-bar";
 // import Toast from "react-native-toast-message";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// // Custom Header
+// // Custom components
 // import Header from "./components/Header";
+// import FirstSplash from "./components/FirstSplash";
+// import SecondSplash from "./components/SecondSplash";
 
 // // Screens
 // import HomeScreen from "./screens/HomeScreen";
@@ -24,17 +30,14 @@
 // import ContactsScreen from "./screens/ContactsScreen";
 // import PriceScreen from "./screens/PriceScreen";
 // import AboutScreen from "./screens/AboutScreen";
-// import LegalScreen from "./screens/PrivacyPolicyScreen";
 // import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
 // import TermsandConditionScreen from "./screens/TermsandConditionScreen";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-// import SecondSplash from "./components/SecondSplash";
 
 // const Tab = createBottomTabNavigator();
 // const Drawer = createDrawerNavigator();
 // const Stack = createNativeStackNavigator();
 
-// // -------------------- Home Stack (includes PriceScreen) --------------------
+// // -------------------- Home Stack --------------------
 // function HomeStack() {
 //   return (
 //     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -88,8 +91,6 @@
 //         const storedMobile = await AsyncStorage.getItem("mobile");
 //         const storedName = await AsyncStorage.getItem("name");
 
-//         console.log(name, mobile);
-
 //         if (storedMobile) setMobile(storedMobile);
 //         if (storedName) setName(storedName);
 //       } catch (error) {
@@ -99,6 +100,7 @@
 
 //     fetchUserData();
 //   }, []);
+
 //   return (
 //     <DrawerContentScrollView {...props}>
 //       <View
@@ -134,65 +136,29 @@
 
 // // -------------------- App --------------------
 // export default function App() {
-
-//   const [appIsReady, setAppIsReady] = useState(false);
-
-//   // useEffect(() => {
-//   //   async function prepare() {
-//   //     try {
-//   //       // Prevent splash screen from auto-hiding
-//   //       await SplashScreen.preventAutoHideAsync();
-
-//   //       // Simulate loading for 3 seconds
-//   //       await new Promise((resolve) => setTimeout(resolve, 2000));
-//   //     } catch (e) {
-//   //       console.warn(e);
-//   //     } finally {
-//   //       setAppIsReady(true);
-//   //     }
-//   //   }
-
-//   //   prepare();
-//   // }, []);
-
-//   // useEffect(() => {
-//   //   if (appIsReady) {
-//   //     // Hide the splash screen once app is ready
-//   //     SplashScreen.hideAsync();
-//   //   }
-//   // }, [appIsReady]);
-
-//   // // Keep splash screen visible until app is ready
-//   // if (!appIsReady) return null;
-//   const [showSecondSplash, setShowSecondSplash] = useState(true);
+//   const [showFirstSplash, setShowFirstSplash] = useState(true);
+//   const [showSecondSplash, setShowSecondSplash] = useState(false);
 
 //   useEffect(() => {
-//     async function prepare() {
-//       try {
-//         // Keep the first splash (Expo/Native)
-//         // await SplashScreen.preventAutoHideAsync();
-//         await new Promise((resolve) => setTimeout(resolve, 1500)); // 1.5s
-//       } catch (e) {
-//         console.warn(e);
-//       } finally {
-//         setAppIsReady(true);
-//       }
-//     }
-//     prepare();
+//     // First splash for 1s
+//     const firstTimer = setTimeout(() => {
+//       setShowFirstSplash(false);
+//       setShowSecondSplash(true);
+//     }, 1000);
+
+//     // Second splash for 2s
+//     const secondTimer = setTimeout(() => {
+//       setShowSecondSplash(false);
+//     }, 2000); // 1s + 2s
+
+//     return () => {
+//       clearTimeout(firstTimer);
+//       clearTimeout(secondTimer);
+//     };
 //   }, []);
 
-//   useEffect(() => {
-//     if (appIsReady) {
-//       SplashScreen.hideAsync(); // hide native splash
-//     }
-//   }, [appIsReady]);
-
-//   if (!appIsReady) return null;
-
-//   // 👇 Show second splash for 2s
-//   if (showSecondSplash) {
-//     return <SecondSplash onFinish={() => setShowSecondSplash(false)} />;
-//   }
+//   if (showFirstSplash) return <FirstSplash />;
+//   if (showSecondSplash) return <SecondSplash />;
 
 //   return (
 //     <NavigationContainer>
@@ -297,11 +263,7 @@
 //           options={{
 //             drawerLabel: "Privacy Policy",
 //             drawerIcon: ({ color, size }) => (
-//               <Ionicons
-//                 name="document-text-outline"
-//                 size={size}
-//                 color={color}
-//               />
+//               <Ionicons name="document-text-outline" size={size} color={color} />
 //             ),
 //           }}
 //         />
@@ -323,7 +285,7 @@
 
 
 import React, { useEffect, useState } from "react";
-import { Platform, Text, View } from "react-native";
+import { Platform, Text, View, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -332,7 +294,6 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -357,6 +318,18 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
+// -------------------- Small Image Icon component --------------------
+function IconImage({ source, size = 20, tintColor, style, resizeMode = "contain" }) {
+  // If you pass a remote uri object ({ uri: '...' }), tintColor will not work on Android.
+  const tintStyle = tintColor ? { tintColor } : null;
+  return (
+    <Image
+      source={source}
+      style={[{ width: size, height: size, resizeMode }, tintStyle, style]}
+    />
+  );
+}
+
 // -------------------- Home Stack --------------------
 function HomeStack() {
   return (
@@ -367,20 +340,57 @@ function HomeStack() {
   );
 }
 
+// helper to map route to local icons (replace with your actual paths)
+const TAB_ICONS = {
+  Home: {
+    default: require("./assets/icons/home.png"),
+    active: require("./assets/icons/home.png"),
+  },
+  "Place Order": {
+    default: require("./assets/icons/placeorder.png"),
+    active: require("./assets/icons/placeorder.png"),
+  },
+  "My Orders": {
+    default: require("./assets/icons/orders.png"),
+    active: require("./assets/icons/orders.png"),
+    // active: require("./assets/icons/myorders-active.png"),
+
+  },
+  Help: {
+    default: require("./assets/icons/help.png"),
+    active: require("./assets/icons/help.png"),
+  },
+  Profile: {
+    default: require("./assets/icons/profile.png"),
+    active: require("./assets/icons/profile.png"),
+  },
+};
+
+const DRAWER_ICONS = {
+  Home: require("./assets/icons/home.png"),
+  AboutUs: require("./assets/icons/about.png"),
+  ProfileDrawer: require("./assets/icons/profile.png"),
+  PlaceOrder: require("./assets/icons/placeorder.png"),
+  OrdersDrawer: require("./assets/icons/orders.png"),
+  PriceList: require("./assets/icons/money.png"),
+  HelpDrawer: require("./assets/icons/help.png"),
+  "Privacy Policy": require("./assets/icons/privacyplcy.png"),
+  "Tearms and conditions": require("./assets/icons/tandc.png"),
+};
+
 // -------------------- Bottom Tabs --------------------
 function BottomTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-          if (route.name === "Home") iconName = "home-outline";
-          else if (route.name === "Place Order") iconName = "cube-outline";
-          else if (route.name === "My Orders") iconName = "cart-outline";
-          else if (route.name === "Help") iconName = "help-circle-outline";
-          else if (route.name === "Profile") iconName = "person-outline";
-          return <Ionicons name={iconName} size={size} color={color} />;
+        tabBarIcon: ({ focused, color, size }) => {
+          const icons = TAB_ICONS[route.name];
+          if (!icons) return null;
+          // If you use separate active images, prefer them; otherwise tint the default image
+          const src = focused && icons.active ? icons.active : icons.default;
+          // tintColor is passed by tabBar options; if your images are full-color, do not tint
+          return <IconImage source={src} size={size ?? 20} tintColor={color} />;
         },
         tabBarActiveTintColor: "#2563eb",
         tabBarInactiveTintColor: "#000000",
@@ -435,11 +445,10 @@ function CustomDrawerContent(props) {
           alignItems: "center",
         }}
       >
-        <Ionicons
-          name="person-circle-outline"
+        <IconImage
+          source={require("./assets/icons/profile.png")}
           size={60}
-          color="#fff"
-          style={{ marginBottom: 10 }}
+          style={{ borderRadius: 30, overflow: "hidden" }}
         />
         <View>
           <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
@@ -484,14 +493,13 @@ export default function App() {
     <NavigationContainer>
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawerContent {...props} />}
-        screenOptions={{
-          header: ({ navigation }) => (
+        screenOptions={({ navigation }) => ({
+          header: () => (
             <View>
               <StatusBar translucent backgroundColor="#fff" style="dark" />
               <View
                 style={{
-                  height:
-                    Platform.OS === "android" ? StatusBar.currentHeight : 44,
+                  height: Platform.OS === "android" ? StatusBar.currentHeight : 44,
                   backgroundColor: "#fff",
                 }}
               />
@@ -501,7 +509,7 @@ export default function App() {
           drawerActiveTintColor: "#2563eb",
           drawerInactiveTintColor: "#000",
           drawerLabelStyle: { fontSize: 15, fontWeight: "600" },
-        }}
+        })}
       >
         <Drawer.Screen
           name="MainDrawer"
@@ -509,7 +517,7 @@ export default function App() {
           options={{
             drawerLabel: "Home",
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="home-outline" size={size} color={color} />
+              <IconImage source={DRAWER_ICONS.Home} size={size ?? 20} tintColor={color} />
             ),
           }}
         />
@@ -519,11 +527,7 @@ export default function App() {
           options={{
             drawerLabel: "About Us",
             drawerIcon: ({ color, size }) => (
-              <Ionicons
-                name="information-circle-outline"
-                size={size}
-                color={color}
-              />
+              <IconImage source={DRAWER_ICONS.AboutUs} size={size ?? 20} tintColor={color} />
             ),
           }}
         />
@@ -533,7 +537,7 @@ export default function App() {
           options={{
             drawerLabel: "Profile",
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="person-outline" size={size} color={color} />
+              <IconImage source={DRAWER_ICONS.ProfileDrawer} size={size ?? 20} tintColor={color} />
             ),
           }}
         />
@@ -543,7 +547,7 @@ export default function App() {
           options={{
             drawerLabel: "Place Order",
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="cart-outline" size={size} color={color} />
+              <IconImage source={DRAWER_ICONS.PlaceOrder} size={size ?? 20} tintColor={color} />
             ),
           }}
         />
@@ -553,7 +557,7 @@ export default function App() {
           options={{
             drawerLabel: "My Orders",
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="cart-outline" size={size} color={color} />
+              <IconImage source={DRAWER_ICONS.OrdersDrawer} size={size ?? 20} tintColor={color} />
             ),
           }}
         />
@@ -563,7 +567,7 @@ export default function App() {
           options={{
             drawerLabel: "Price List",
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="cash-outline" size={size} color={color} />
+              <IconImage source={DRAWER_ICONS.PriceList} size={size ?? 20} tintColor={color} />
             ),
           }}
         />
@@ -573,7 +577,7 @@ export default function App() {
           options={{
             drawerLabel: "Help & Support",
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="help-circle-outline" size={size} color={color} />
+              <IconImage source={DRAWER_ICONS.HelpDrawer} size={size ?? 20} tintColor={color} />
             ),
           }}
         />
@@ -583,7 +587,7 @@ export default function App() {
           options={{
             drawerLabel: "Privacy Policy",
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="document-text-outline" size={size} color={color} />
+              <IconImage source={DRAWER_ICONS["Privacy Policy"]} size={size ?? 20} tintColor={color} />
             ),
           }}
         />
@@ -593,7 +597,7 @@ export default function App() {
           options={{
             drawerLabel: "Terms and conditions",
             drawerIcon: ({ color, size }) => (
-              <Ionicons name="reader-outline" size={size} color={color} />
+              <IconImage source={DRAWER_ICONS["Tearms and conditions"]} size={size ?? 20} tintColor={color} />
             ),
           }}
         />

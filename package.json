@@ -6,8 +6,7 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web",
-    "postinstall": "cp -R node_modules/react-native-vector-icons/Fonts ./android/app/src/main/assets/fonts"
+    "web": "expo start --web"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",

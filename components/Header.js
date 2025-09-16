@@ -1,8 +1,8 @@
-
 import React from "react";
 import { View, Text, Image, TouchableOpacity, Linking } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+// import Ionicons from "react-native-vector-icons/Ionicons";
 // import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 import { Navigation } from "lucide-react-native";
 
@@ -26,7 +26,11 @@ export default function Header({ onMenuPress }) {
       >
         {/* Left - Menu Icon */}
         <TouchableOpacity onPress={onMenuPress}>
-          <Ionicons name="menu-outline" size={25} color="#042048" />
+          <Image
+            source={require("../assets/icons/menubar.png")}
+            style={{ width: 35, height: 22, resizeMode: "contain" }}
+          />
+          {/* <Image name="menu-outline" size={25} color="#042048" /> */}
         </TouchableOpacity>
 
         {/* Center - Logo */}
@@ -50,14 +54,22 @@ export default function Header({ onMenuPress }) {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity style={{ marginRight: 20 }}>
-            <Ionicons name="notifications" size={20} color="#042048" />
+          <TouchableOpacity style={{ marginRight: 10 }}>
+            <Image
+              source={require("../assets/icons/notification.png")}
+              style={{ width: 30, height: 22, resizeMode: "contain" }}
+            />
+            {/* <Ionicons name="notifications" size={20} color="#042048" /> */}
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => Linking.openURL("tel:+918125423366")}
           >
-            <Ionicons name="call" size={20} color="#042048" />
+            <Image
+              source={require("../assets/icons/call.png")}
+              style={{ width: 30, height: 22, resizeMode: "contain" }}
+            />
+            {/* <Ionicons name="call" size={20} color="#042048" /> */}
           </TouchableOpacity>
         </View>
       </View>
