@@ -5,15 +5,11 @@
     "owner": "lakshmi_it",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",  
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-   ,
     "assetBundlePatterns": [
       "**/*"
     ],
- 
-  
-   
     "extra": {
       "eas": {
         "projectId": "b480df94-bfce-462c-a1a3-e66cff722186"
