@@ -393,10 +393,11 @@ function BottomTabs() {
           return <IconImage source={src} size={size ?? 20} tintColor={color} />;
         },
         tabBarActiveTintColor: "#2563eb",
-        tabBarInactiveTintColor: "#000000",
+        tabBarInactiveTintColor: "#042048",
         tabBarStyle: {
-          height: 100,
-          paddingBottom: 10,
+          height: 70,
+          paddingBottom: 0,
+        
           paddingTop: 5,
         },
       })}
@@ -499,7 +500,7 @@ export default function App() {
               <StatusBar translucent backgroundColor="#fff" style="dark" />
               <View
                 style={{
-                  height: Platform.OS === "android" ? StatusBar.currentHeight : 44,
+                  height: Platform.OS === "android" ? StatusBar.currentHeight : 30,
                   backgroundColor: "#fff",
                 }}
               />
