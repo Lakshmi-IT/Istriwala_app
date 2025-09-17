@@ -1,10 +1,12 @@
 {
   "expo": {
+    "name": "ISTRIWALA APP",
+    "slug": "istriwala-app",  
+    "owner": "lakshmi_it",
     "extra": {
       "eas": {
         "projectId": "b480df94-bfce-462c-a1a3-e66cff722186"
       }
-    },
-    "owner": "lakshmi_it"
+    }
   }
 }
