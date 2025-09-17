@@ -1,6 +1,3 @@
-
-
-
 // import React, { useEffect, useState } from "react";
 // import { Platform, Text, View } from "react-native";
 // import { NavigationContainer } from "@react-navigation/native";
@@ -283,7 +280,6 @@
 //   );
 // }
 
-
 import React, { useEffect, useState } from "react";
 import { Platform, Text, View, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -313,13 +309,20 @@ import PriceScreen from "./screens/PriceScreen";
 import AboutScreen from "./screens/AboutScreen";
 import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
 import TermsandConditionScreen from "./screens/TermsandConditionScreen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 // -------------------- Small Image Icon component --------------------
-function IconImage({ source, size = 20, tintColor, style, resizeMode = "contain" }) {
+function IconImage({
+  source,
+  size = 20,
+  tintColor,
+  style,
+  resizeMode = "contain",
+}) {
   // If you pass a remote uri object ({ uri: '...' }), tintColor will not work on Android.
   const tintStyle = tintColor ? { tintColor } : null;
   return (
@@ -354,7 +357,6 @@ const TAB_ICONS = {
     default: require("./assets/icons/orders.png"),
     active: require("./assets/icons/orders.png"),
     // active: require("./assets/icons/myorders-active.png"),
-
   },
   Help: {
     default: require("./assets/icons/help.png"),
@@ -380,24 +382,50 @@ const DRAWER_ICONS = {
 
 // -------------------- Bottom Tabs --------------------
 function BottomTabs() {
+
+  const insets = useSafeAreaInsets();
   return (
+    // <Tab.Navigator
+    //   screenOptions={({ route }) => ({
+    //     headerShown: false,
+    //     tabBarIcon: ({ focused, color, size }) => {
+    //       const icons = TAB_ICONS[route.name];
+    //       if (!icons) return null;
+    //       // If you use separate active images, prefer them; otherwise tint the default image
+    //       const src = focused && icons.active ? icons.active : icons.default;
+    //       // tintColor is passed by tabBar options; if your images are full-color, do not tint
+    //       return <IconImage source={src} size={size ?? 20} tintColor={color} />;
+    //     },
+    //     tabBarActiveTintColor: "#2563eb",
+    //     tabBarInactiveTintColor: "#042048",
+    //     tabBarStyle: {
+    //       height: 70,
+    //       paddingBottom: 0,
+
+    //       paddingTop: 5,
+    //     },
+    //   })}
+    // >
+    //   <Tab.Screen name="Home" component={HomeStack} />
+    //   <Tab.Screen name="Place Order" component={PlaceOrderScreen} />
+    //   <Tab.Screen name="My Orders" component={MyOrdersScreen} />
+    //   <Tab.Screen name="Help" component={ContactsScreen} />
+    //   <Tab.Screen name="Profile" component={ProfileScreen} />
+    // </Tab.Navigator>
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           const icons = TAB_ICONS[route.name];
           if (!icons) return null;
-          // If you use separate active images, prefer them; otherwise tint the default image
           const src = focused && icons.active ? icons.active : icons.default;
-          // tintColor is passed by tabBar options; if your images are full-color, do not tint
           return <IconImage source={src} size={size ?? 20} tintColor={color} />;
         },
         tabBarActiveTintColor: "#2563eb",
         tabBarInactiveTintColor: "#042048",
         tabBarStyle: {
-          height: 70,
-          paddingBottom: 0,
-        
+          height: 60 + insets.bottom, // adapt height for safe area
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 5,
           paddingTop: 5,
         },
       })}
@@ -447,7 +475,7 @@ function CustomDrawerContent(props) {
         }}
       >
         <IconImage
-          source={require("./assets/icons/profile.png")}
+          source={require("./assets/avatar.png")}
           size={60}
           style={{ borderRadius: 30, overflow: "hidden" }}
         />
@@ -500,7 +528,8 @@ export default function App() {
               <StatusBar translucent backgroundColor="#fff" style="dark" />
               <View
                 style={{
-                  height: Platform.OS === "android" ? StatusBar.currentHeight : 30,
+                  height:
+                    Platform.OS === "android" ? StatusBar.currentHeight : 30,
                   backgroundColor: "#fff",
                 }}
               />
@@ -518,7 +547,11 @@ export default function App() {
           options={{
             drawerLabel: "Home",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS.Home} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS.Home}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />
@@ -528,7 +561,11 @@ export default function App() {
           options={{
             drawerLabel: "About Us",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS.AboutUs} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS.AboutUs}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />
@@ -538,7 +575,11 @@ export default function App() {
           options={{
             drawerLabel: "Profile",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS.ProfileDrawer} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS.ProfileDrawer}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />
@@ -548,7 +589,11 @@ export default function App() {
           options={{
             drawerLabel: "Place Order",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS.PlaceOrder} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS.PlaceOrder}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />
@@ -558,7 +603,11 @@ export default function App() {
           options={{
             drawerLabel: "My Orders",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS.OrdersDrawer} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS.OrdersDrawer}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />
@@ -568,7 +617,11 @@ export default function App() {
           options={{
             drawerLabel: "Price List",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS.PriceList} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS.PriceList}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />
@@ -578,7 +631,11 @@ export default function App() {
           options={{
             drawerLabel: "Help & Support",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS.HelpDrawer} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS.HelpDrawer}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />
@@ -588,7 +645,11 @@ export default function App() {
           options={{
             drawerLabel: "Privacy Policy",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS["Privacy Policy"]} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS["Privacy Policy"]}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />
@@ -598,7 +659,11 @@ export default function App() {
           options={{
             drawerLabel: "Terms and conditions",
             drawerIcon: ({ color, size }) => (
-              <IconImage source={DRAWER_ICONS["Tearms and conditions"]} size={size ?? 20} tintColor={color} />
+              <IconImage
+                source={DRAWER_ICONS["Tearms and conditions"]}
+                size={size ?? 20}
+                tintColor={color}
+              />
             ),
           }}
         />

@@ -217,10 +217,11 @@ const ProfileScreen = () => {
 
   const fetchLocationFromPincode = async (pincode) => {
     try {
+      console.log(pincode)
       const res = await axios.get(
         `https://api.postalpincode.in/pincode/${pincode}`
       );
-      const data = res.data[0];
+      const data = res.data[0]
 
       if (data.Status === "Success" && data.PostOffice?.length > 0) {
         const postOffice = data.PostOffice[0];

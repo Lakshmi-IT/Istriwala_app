@@ -17,7 +17,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { BASE_URL } from "../utils/url";
 import { categories } from "../utils/categories";
 // import Ionicons from "react-native-vector-icons/Ionicons";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 import { useRoute } from "@react-navigation/native";
 
@@ -27,7 +27,10 @@ export default function OrderPage() {
 
   const [selectedCategory, setSelectedCategory] = useState(category || "Men");
   const [selectedItem, setSelectedItem] = useState("");
-  const [qty, setQty] = useState("1");
+  // const [qty, setQty] = useState("1");
+
+  const [qty, setQty] = useState("1"); // actual stored quantity (number)
+
   const [cartData, setCartData] = useState([]);
 
   const [fullcartDetails, setFullcartDetails] = useState(null);
@@ -117,7 +120,7 @@ export default function OrderPage() {
       const res = await axios.post(`${BASE_URL}api/cart/add/${mobile}`, {
         item: selectedItem,
         category: selectedCategory,
-        qty,
+        qty: parseInt(qty),
         price: itemData.price,
       });
 
@@ -311,7 +314,7 @@ export default function OrderPage() {
 
           {/* Qty */}
           <Text style={styles.heading}>QTY</Text>
-          <TextInput
+          {/* <TextInput
             style={styles.input}
             keyboardType="numeric"
             value={qty}
@@ -325,8 +328,25 @@ export default function OrderPage() {
               // enforce minimum when user leaves input
               if (qty === "" || qty === "0") setQty("1");
             }}
-          />
+          /> */}
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            value={qty} // stays string
+            onChangeText={(val) => {
+              // allow only digits
+              const numericOnly = val.replace(/[^0-9]/g, "");
 
+              // if user deletes everything, let it be empty until blur
+              setQty(numericOnly);
+            }}
+            onBlur={() => {
+              // enforce min = 1
+              if (qty === "" || parseInt(qty, 10) < 1) {
+                setQty("1");
+              }
+            }}
+          />
           <TouchableOpacity style={styles.button} onPress={handleAddToCart}>
             <View
               style={{
@@ -357,7 +377,7 @@ export default function OrderPage() {
           {cartData.length === 0 ? (
             <View style={{ alignItems: "center", padding: 20 }}>
               <Image
-                source={require("../assets/Laundrycopy.png")}
+                source={require("../assets/Laundry.png")}
                 style={{ width: 150, height: 150, resizeMode: "contain" }}
               />
               <Text style={{ marginTop: 10, fontSize: 16, color: "#555" }}>
