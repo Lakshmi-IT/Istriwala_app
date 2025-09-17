@@ -1,10 +1,19 @@
 {
   "expo": {
+    "name": "ISTRIWALA APP",
+    "slug": "istriwala-app",
+    "owner": "lakshmi_it",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "extra": {
       "eas": {
-        "projectId": "ee802619-95e4-4e01-9e68-c2308d76e91d"
+        "projectId": "b480df94-bfce-462c-a1a3-e66cff722186"
       }
-    },
-    "owner": "karthikgopireddy"
+    }
   }
 }
