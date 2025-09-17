@@ -111,18 +111,29 @@ android {
         }
     }
 
-    buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
-        release {
-            signingConfig signingConfigs.debug
-            shrinkResources (findProperty("android.enableShrinkResourcesInReleaseBuilds")?.toBoolean() ?: false)
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            crunchPngs (findProperty("android.enablePngCrunchInReleaseBuilds")?.toBoolean() ?: true)
-        }
+    // buildTypes {
+    //     debug {
+    //         signingConfig signingConfigs.debug
+    //     }
+    //     release {
+    //         signingConfig signingConfigs.debug
+    //         shrinkResources (findProperty("android.enableShrinkResourcesInReleaseBuilds")?.toBoolean() ?: false)
+    //         minifyEnabled enableProguardInReleaseBuilds
+    //         proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+    //         crunchPngs (findProperty("android.enablePngCrunchInReleaseBuilds")?.toBoolean() ?: true)
+    //     }
+    // }
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+
+     
+        minifyEnabled true
+        shrinkResources true
+
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+}
 
     packagingOptions {
         jniLibs {
