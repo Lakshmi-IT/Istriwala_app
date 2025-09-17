@@ -22,7 +22,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run EAS Build (Preview APK)
+      - name: Build Production APK
         env:
           EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
-        run: eas build -p android --profile preview --non-interactive
+        run: eas build -p android --profile production --non-interactive --clear-cache
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-apk
+          path: dist/*.apk
