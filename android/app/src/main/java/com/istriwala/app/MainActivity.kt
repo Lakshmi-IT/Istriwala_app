@@ -1,6 +1,6 @@
 package com.istriwala.app
 
-import expo.modules.splashscreen.SplashScreenManager
+
 import android.os.Build
 import android.os.Bundle
 import com.facebook.react.ReactActivity
@@ -14,7 +14,7 @@ class MainActivity : ReactActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     // Expo SplashScreen setup
-    SplashScreenManager.registerOnActivity(this)
+   
     super.onCreate(null)
 
     if (BuildConfig.DEBUG) {

@@ -82,7 +82,7 @@ export const categories = {
     { name: "Kudi", price: 35 },
     { name: "Long pullover", price: 50 },
     { name: "Stocking", price: 10 },
-    { name: "Sweat shirt with hoodi", price: 35 },
+    { name: "Sweat shirt with hoodie", price: 35 },
     { name: "Nighties", price: 20 },
   ],
 
@@ -115,7 +115,7 @@ export const categories = {
     { name: "Blouse heavy", price: 25 },
     { name: "Lehenga", price: 50 },
     { name: "Lehenga heavy", price: 75 },
-    { name: "Court", price: 40 }, // your list says "Court", corrected to Coat
+    { name: "Coat", price: 40 }, // your list says "Court", corrected to Coat
     { name: "Waistcoat", price: 20 },
     { name: "Jacket", price: 25 },
     { name: "Sweater", price: 30 },
@@ -130,7 +130,7 @@ export const categories = {
     { name: "Blanket", price: 50 },
     { name: "Bed sheet", price: 30 },
     { name: "Pillow covers set", price: 10 },
-    { name: "Bathroob", price: 50 },
+    { name: "Bathrobe", price: 50 },
     { name: "Hand karchief", price: 10 },
     { name: "Muffler", price: 20 },
     { name: "Tie", price: 10 },

@@ -89,7 +89,7 @@ export default function RecentOrders() {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  console.log(amount, "amount");
+
 
   useFocusEffect(
     useCallback(() => {
@@ -143,13 +143,13 @@ export default function RecentOrders() {
             gap: 15,
           }}
         >
-          <View style={styles.statsRow}>
+          {/* <View style={styles.statsRow}>
             <View style={styles.statCard}>
               <View
                 style={[styles.statIconWrap, { backgroundColor: "#E6F6EF" }]}
               >
-                {/* <Icon name="currency-inr" size={22} color="#333" />
-                 */}
+                
+                
                 <Image
                   source={require("../assets/icons/money.png")}
                   style={{ width: 30, height: 22, resizeMode: "contain" }}
@@ -158,7 +158,7 @@ export default function RecentOrders() {
               <Text style={styles.statValue}>{amount || 0}</Text>
               <Text style={styles.statLabel}>SPENT</Text>
             </View>
-          </View>
+          </View> */}
           <View style={styles.statsRow}>
             <View style={styles.statCard}>
               <View

@@ -44,7 +44,7 @@ const ContactScreen = () => {
       <View style={styles.heroSection}>
         <Text style={styles.heroTitle}>Contact Us</Text>
         <Text style={styles.heroSubtitle}>
-          Get in touch with Mumbai's most trusted Ironing service. We're here to help with all your clothing care needs.
+          Get in touch with Andra Pradesh most trusted Ironing service. We're here to help with all your clothing care needs.
         </Text>
       </View>
 

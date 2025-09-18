@@ -16,12 +16,15 @@ import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../utils/url";
 import Toast from "react-native-toast-message";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileScreen = () => {
   const [user, setUser] = useState(null);
   const [form, setForm] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(false);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -43,6 +46,7 @@ const ProfileScreen = () => {
     setForm({ ...form, [name]: value });
   };
   const handleSubmit = async () => {
+   
     // Required fields list
     const requiredFields = {
       userName: "User Name",
@@ -66,6 +70,7 @@ const ProfileScreen = () => {
         return; // stop submission
       }
     }
+ 
 
     // Additional validation for mobile and pincode
     if (form.mobile.length !== 10) {
@@ -94,60 +99,42 @@ const ProfileScreen = () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      setUser(res.data);
-      setIsEditing(false);
-      await AsyncStorage.setItem("mobile", res?.data?.user?.mobile || "");
-      await AsyncStorage.setItem("name", res?.data?.user?.userName || "");
+      if (res.status === 200) {
+        setUser(res.data);
+        setIsEditing(false);
+        await AsyncStorage.setItem("mobile", res?.data?.user?.mobile || "");
+        await AsyncStorage.setItem("name", res?.data?.user?.userName || "");
 
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Profile updated successfully!",
-        position: "top",
-      });
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Profile updated successfully!",
+          position: "top",
+        });
+        navigation.navigate("Home");
+      }
     } catch (err) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Failed to update profile.",
-        position: "top",
-      });
+     
+      if (err?.response?.status === 400) {
+        Toast.show({
+          type: "error",
+          text1: "Not providing service",
+          text2:
+            err?.response?.data?.message ||
+            "We are not providing services to your Location",
+          position: "top",
+        });
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Failed to update profile.",
+          position: "top",
+        });
+      }
     }
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     console.log(BASE_URL, "BASE_URL");
-  //     const res = await axios.post(`${BASE_URL}api/user/register`, form, {
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-
-  //     console.log(res, "res");
-
-  //     setUser(res.data);
-  //     setIsEditing(false);
-  //     await AsyncStorage.setItem("mobile", res?.data?.user?.mobile || "");
-  //     await AsyncStorage.setItem("name", res?.data?.user?.userName || "");
-  //     Toast.show({
-  //       type: "success",
-  //       text1: "Success",
-  //       text2: "Profile updated successfully!",
-  //       position: "top",
-  //     });
-  //   } catch (err) {
-  //     console.log(BASE_URL, "BASE_URL");
-  //     Toast.show({
-  //       type: "error",
-  //       text1: "Error",
-  //       text2: "Failed to update profile.",
-  //       position: "top",
-  //     });
-  //     // Alert.alert("Error", "Failed to update profile.");
-  //     // console.error(err);
-  //   }
-  // };
-
-  // 🌍 Autofill location using GPS + Reverse Geocoding
   const fillWithCurrentLocation = async () => {
     try {
       setLoadingLocation(true);
@@ -207,52 +194,48 @@ const ProfileScreen = () => {
     }
   };
 
-  // if (!user) {
-  //   return (
-  //     <View style={styles.centered}>
-  //       <ActivityIndicator size="large" color="#2563eb" />
-  //     </View>
-  //   );
-  // }
-
   const fetchLocationFromPincode = async (pincode) => {
+    const pin = Number(pincode.trim());
+   
     try {
-      console.log(pincode)
-      const res = await axios.get(
-        `https://api.postalpincode.in/pincode/${pincode}`
-      );
-      const data = res.data[0]
+      const options = {
+        method: "GET",
+        url: "https://india-pincode-api.p.rapidapi.com/v1/in/places/pincode",
+        params: { pincode: pin },
+        headers: {
+          "x-rapidapi-key":
+            "37cd0dd341msh6effb139fed18a7p165143jsn43e3d615982d",
+          "x-rapidapi-host": "india-pincode-api.p.rapidapi.com",
+        },
+      };
+      const res = await axios.request(options);
 
-      if (data.Status === "Success" && data.PostOffice?.length > 0) {
-        const postOffice = data.PostOffice[0];
-        console.log(postOffice, "postOffice");
+    
+
+      const data = res.data;
+   
+
+      if (data && data.state && data.district) {
         setForm((prev) => ({
           ...prev,
-          area: postOffice.District || prev.area,
-          state: postOffice.State || prev.state,
+          area: data.district || prev.area,
+          state: data.state || prev.state,
         }));
         Toast.show({
           type: "success",
           text1: "📍 Location detected",
-          text2: `${postOffice.District}, ${postOffice.State}`,
+          text2: `${data.district}, ${data.state}`,
           position: "top",
         });
       } else {
-        Toast.show({
-          type: "error",
-          text1: "Invalid Pincode",
-          text2: "Please Enter a Valid Pincode.",
-          position: "top",
-        });
-
-        setForm((prev) => ({ ...prev, area: "", state: "" }));
+        throw new Error("Invalid Pincode");
       }
-    } catch (error) {
-      console.error("Pincode API error:", error);
+    } catch (err) {
+      console.error("Alternate Pincode API error:", err.message || err);
       Toast.show({
         type: "error",
-        text1: "Filed",
-        text2: "Failed to fetch location from ",
+        text1: "Failed",
+        text2: "Could not fetch location from PIN code.",
         position: "top",
       });
     }
@@ -278,7 +261,7 @@ const ProfileScreen = () => {
           {/* Header */}
           <View style={styles.headerRow}>
             <Text style={styles.headerTitle}>👤 Profile Settings</Text>
-            {!isEditing ? (
+            {/* {!isEditing ? (
               <TouchableOpacity
                 onPress={() => setIsEditing(true)}
                 style={styles.editBtn}
@@ -295,7 +278,7 @@ const ProfileScreen = () => {
               >
                 <Text style={styles.editBtnText}>Cancel</Text>
               </TouchableOpacity>
-            )}
+            )} */}
           </View>
 
           {/* User Name + Mobile */}
@@ -306,7 +289,7 @@ const ProfileScreen = () => {
                 style={styles.input}
                 value={form?.userName || ""}
                 onChangeText={(val) => handleChange("userName", val)}
-                editable={isEditing}
+                // editable={isEditing}
                 placeholder="Enter Your Name"
               />
             </View>
@@ -321,7 +304,7 @@ const ProfileScreen = () => {
                 onChangeText={(val) =>
                   handleChange("mobile", val.replace(/\D/g, "").slice(0, 10))
                 }
-                editable={isEditing}
+                // editable={isEditing}
               />
             </View>
           </View>
@@ -351,7 +334,7 @@ const ProfileScreen = () => {
                 value={form?.hno || ""}
                 placeholder="Enter H.NO / Flat No"
                 onChangeText={(val) => handleChange("hno", val)}
-                editable={isEditing}
+                // editable={isEditing}
               />
             </View>
             <View style={styles.field}>
@@ -361,7 +344,7 @@ const ProfileScreen = () => {
                 placeholder="Enter Your Street"
                 value={form?.street || ""}
                 onChangeText={(val) => handleChange("street", val)}
-                editable={isEditing}
+                // editable={isEditing}
               />
             </View>
           </View>
@@ -375,7 +358,7 @@ const ProfileScreen = () => {
                 value={form?.area || ""}
                 placeholder="Enter Area"
                 onChangeText={(val) => handleChange("area", val)}
-                editable={isEditing}
+                // editable={isEditing}
               />
             </View>
             {/* <View style={styles.field}>
@@ -401,16 +384,16 @@ const ProfileScreen = () => {
                 keyboardType="numeric"
                 maxLength={6}
                 placeholder="Enter Pincode"
-                editable={isEditing}
+                // editable={isEditing}
                 onChangeText={(val) => {
                   // allow only numbers and max 6 digits
                   const numericVal = val.replace(/\D/g, "").slice(0, 6);
                   setForm({ ...form, pincode: numericVal });
 
-                  // auto-fetch when 6 digits are entered
-                  if (numericVal.length === 6) {
-                    fetchLocationFromPincode(numericVal);
-                  }
+                  // // auto-fetch when 6 digits are entered
+                  // if (numericVal.length === 6) {
+                  //   fetchLocationFromPincode(numericVal);
+                  // }
                 }}
               />
             </View>
@@ -424,16 +407,15 @@ const ProfileScreen = () => {
               value={form?.state || ""}
               placeholder="Enter State"
               onChangeText={(val) => handleChange("state", val)}
-              editable={isEditing}
+              // editable={isEditing}
             />
           </View>
 
           {/* Save Button */}
-          {isEditing && (
-            <TouchableOpacity onPress={handleSubmit} style={styles.saveBtn}>
-              <Text style={styles.saveBtnText}>Save Changes</Text>
-            </TouchableOpacity>
-          )}
+
+          <TouchableOpacity onPress={handleSubmit} style={styles.saveBtn}>
+            <Text style={styles.saveBtnText}>Save Changes</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

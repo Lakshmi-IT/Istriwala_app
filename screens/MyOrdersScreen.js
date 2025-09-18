@@ -52,7 +52,7 @@ export default function YourOrders() {
         },
       });
 
-      console.log(response, "response");
+    
 
       const data = await response.json();
 

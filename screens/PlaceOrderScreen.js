@@ -197,15 +197,15 @@ export default function OrderPage() {
 
   // ✅ Delete cart item
   const deleteCartItem = async (itemId) => {
-    console.log(itemId, "itemId");
+ 
     const mobile = await AsyncStorage.getItem("mobile");
-    console.log(mobile, "mobile");
+  
     try {
       const res = await axios.delete(
         `${BASE_URL}api/cart/remove-item/${mobile}`,
         { data: { itemId } }
       );
-      console.log(res, "res");
+     
       if (res.status === 200) {
         Toast.show({
           type: "success",
@@ -254,14 +254,14 @@ export default function OrderPage() {
     !address[0].details ||
     address[0].details.replace(/undefined|,|-|\s/g, "") === "";
 
-  // console.log(cartData, "cartData")
+
 
   const totalPrice = cartData?.reduce(
     (acc, curr) => acc + curr?.price * curr?.qty,
     0
   );
 
-  // console.log("Total Price:", totalPrice);
+
 
   let errorMessage = "";
   if (cartData?.length === 0) {

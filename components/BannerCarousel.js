@@ -4,8 +4,9 @@ import { View, FlatList, Image, StyleSheet, Dimensions } from "react-native";
 const { width } = Dimensions.get("window");
 
 const banners = [
-  require("../assets/banner1.jpeg"),
-  require("../assets/banner2.jpeg"),
+  require("../assets/b1.jpeg"),
+  require("../assets/b2.jpeg"),
+  require("../assets/banner4.jpeg"),
   require("../assets/banner3.jpeg"),
 ];
 
