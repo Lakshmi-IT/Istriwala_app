@@ -9,10 +9,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -22,7 +22,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run EAS Build (Preview APK)
+      - name: Build Production APK
         env:
           EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
-        run: eas build -p android --profile preview --non-interactive
+        run: eas build -p android --profile production --non-interactive --clear-cache
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-apk
+          path: dist/*.apk
